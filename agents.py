@@ -6,42 +6,32 @@ load_dotenv()
 
 import os
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ["OPENAI_MODEL_NAME"]="gpt-4o"
+os.environ["OPENAI_MODEL_NAME"] = "gpt-4"  # Changed from "gpt-4o" to "gpt-4"
 
-# Create a Blood Report Analyst
 blood_report_analyst = Agent(
     role='Blood Report Analyst',
     goal=(
         "Perform a comprehensive analysis of the provided blood report, interpreting all key parameters, biomarkers, and potential health concerns. "
-        "Summarize the findings in a clear and concise manner that is easily understandable for patients without medical expertise."
+        "Provide a detailed summary that is both thorough and accessible to non-experts."
     ),
-    verbose=True,
-    memory=True,
     backstory=(
-        "You are an esteemed Blood Report Analyst with extensive experience in interpreting and analyzing blood test results. Your expertise lies in identifying "
-        "and explaining complex medical data in a way that is accessible to individuals without medical backgrounds. You have a keen eye for detail and a deep understanding "
-        "of various health conditions, which enables you to provide insightful and accurate summaries of blood reports."
+        "You are an experienced Blood Report Analyst with a keen eye for detail and a talent for explaining complex medical data in layman's terms. "
+        "Your analyses are known for their thoroughness and clarity, helping patients understand their health status comprehensively."
     ),
     tools=[PDFSearchTool],
-    model='gpt-4o',
-    allow_delegation=False
+    verbose=True
 )
 
-# Create a Researcher
 researcher = Agent(
-    role='Researcher',
+    role='Health Researcher',
     goal=(
-        "Conduct thorough online research based on the analysis of the blood report. Identify credible and relevant articles that provide additional information "
-        "on the findings and offer evidence-based health recommendations. Present these resources in a well-organized manner, including links to the articles."
+        "Based on the blood report analysis, provide specific health recommendations and find relevant, credible resources to support these recommendations. "
+        "Ensure that the information is tailored to the patient's specific health situation as indicated by their blood report."
     ),
-    verbose=True,
-    memory=True,
     backstory=(
-        "You are a highly skilled Researcher with a specialization in health and medical information. Your role involves scouring the internet for reliable and pertinent "
-        "articles that align with the health needs identified in blood test results. You possess a strong ability to filter through vast amounts of information to find the most "
-        "relevant and credible sources. Your recommendations are based on solid research and are aimed at helping individuals make informed health decisions."
+        "You are a meticulous Health Researcher with a background in both medical science and scientific communication. "
+        "You excel at finding the most relevant and up-to-date health information and presenting it in a way that's both informative and actionable for patients."
     ),
     tools=[PDFSearchTool, search_tool],
-    model='gpt-4o',
-    allow_delegation=False
+    verbose=True
 )

@@ -2,39 +2,42 @@ from crewai import Task
 from tools import search_tool, PDFSearchTool
 from agents import blood_report_analyst, researcher
 
-# Research Task
 report_analyze_task = Task(
     description=(
-        "Conduct a thorough analysis of the provided {blood_report}. The analysis should cover all key parameters, biomarkers, and potential health issues "
-        "identified in the report. The goal is to create an easy-to-understand summary that explains the significance of each parameter and highlights any "
-        "abnormal findings. This summary should be accessible to non-experts, providing clear and concise explanations that help the patient understand "
-        "their health status."
+        "Analyze the provided {blood_report} thoroughly. Focus on all key parameters, biomarkers, and potential health issues. "
+        "Create a detailed summary that explains the significance of each parameter, highlighting any abnormal findings. "
+        "The summary should be accessible to non-experts, providing clear explanations of the patient's health status."
     ),
     expected_output=(
-        "A detailed and comprehensive summary of the {blood_report} that covers all important aspects of the analysis. The summary should include explanations "
-        "of key parameters, descriptions of any abnormal findings, and their potential health implications. The document should be well-structured, clear, "
-        "and written in a professional tone."
+        "A comprehensive summary of the {blood_report} that includes:\n"
+        "1. Explanation of all key parameters and their normal ranges\n"
+        "2. Detailed description of any abnormal findings\n"
+        "3. Potential health implications of these findings\n"
+        "4. Any critical areas that require immediate attention\n"
+        "The summary should be well-structured and written in a professional yet accessible tone."
     ),
     tools=[PDFSearchTool],
-    agent=blood_report_analyst,
-    model='gpt-4o'
+    agent=blood_report_analyst
 )
 
-# Writing Task with Language Model Configuration
 research_task = Task(
     description=(
-        "Conduct extensive online research based on the summary of the {blood_report}. Identify credible articles and resources that provide further information "
-        "on the biomarkers and conditions mentioned in the report. Additionally, develop health recommendations tailored to the patient's needs, based on the "
-        "findings from the blood report and the research. Provide a list of relevant links to articles and resources that support the health recommendations."
+        "Based on the blood report analysis, conduct extensive research to provide health recommendations and relevant resources. "
+        "1. Identify the most critical health issues from the blood report.\n"
+        "2. Research and compile a list of specific, actionable health recommendations.\n"
+        "3. Find credible articles and resources that support each recommendation.\n"
+        "4. Provide a brief summary of each article, explaining its relevance to the blood report findings."
     ),
     expected_output=(
-        "A comprehensive list of health recommendations based on the analysis of the {blood_report}, presented in bullet points. Each recommendation should be "
-        "supported by relevant articles and resources, with links provided. The document should include brief summaries of each article, explaining its relevance "
-        "to the blood report findings."
+        "A detailed report containing:\n"
+        "1. A list of critical health issues identified from the blood report\n"
+        "2. Specific health recommendations for each issue, presented in bullet points\n"
+        "3. For each recommendation, provide 1-3 relevant articles or resources with:\n"
+        "   - A link to the article\n"
+        "   - A brief summary of the article's content\n"
+        "   - An explanation of how it relates to the patient's blood report findings\n"
+        "4. A conclusion summarizing the key actions the patient should take"
     ),
     agent=researcher,
-    async_execution=False,
-    tools=[PDFSearchTool, search_tool],
-    model='gpt-4o',
-    output_file='readable-blood-report.md'
+    tools=[PDFSearchTool, search_tool]
 )
